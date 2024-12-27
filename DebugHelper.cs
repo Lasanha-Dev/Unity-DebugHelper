@@ -1,16 +1,15 @@
-using System;
+using Debug = UnityEngine.Debug;
 
 using System.Collections.Generic;
-
 using System.Diagnostics;
-
-using System.IO;
-
+using System.Runtime.CompilerServices;
 using System.Text;
 
+#if UNITY_EDITOR == false
+using System;
+using System.IO;
 using UnityEngine;
-
-using Debug = UnityEngine.Debug;
+#endif
 
 public static class DebugHelper
 {
@@ -25,44 +24,44 @@ public static class DebugHelper
     }
 #endif
 
-    [Conditional("DEBUG_HELPER")]
-    public static void LogMessage(this object objectToLog, string prefixMessage = "")
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void LogMessage(this object objectToLog, string prefixMessage = "", UnityEngine.Object contextObject = null)
     {
-        Debug.Log($"{prefixMessage}: {objectToLog}");
+        Debug.Log($"{prefixMessage}: {objectToLog}", contextObject);
     }
 
-    [Conditional("DEBUG_HELPER")]
-    public static void LogMessage(this string message, string prefixMessage = "")
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void LogMessage(this string message, string prefixMessage = "", UnityEngine.Object contextObject = null)
     {
-        Debug.Log($"{prefixMessage}: {message}");
+        Debug.Log($"{prefixMessage}: {message}", contextObject);
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogWarning(this object objectToLog, string prefixMessage = "")
     {
         Debug.LogWarning($"{prefixMessage}: {objectToLog}");
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogWarning(this string message, string prefixMessage = "")
     {
         Debug.LogWarning($"{prefixMessage}: {message}");
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogError(this object objectToLog, string prefixMessage = "")
     {
         Debug.LogError($"{prefixMessage}: {objectToLog}");
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogError(this string message, string prefixMessage = "")
     {
         Debug.LogError($"{prefixMessage}: {message}");
     }
 
-    [Conditional("DEBUG_HELPER")]
-    public static void IsValid(this UnityEngine.Object objectToCheck, string context = "", string objectName = "")
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void IsValid(this object objectToCheck, string context = "", string objectName = "")
     {
         if (objectToCheck == null)
         {
@@ -77,23 +76,7 @@ public static class DebugHelper
         }
     }
 
-    [Conditional("DEBUG_HELPER")]
-    public static void IsValid(this System.Object objectToCheck, string context = "", string objectName = "")
-    {
-        if (objectToCheck == null)
-        {
-            string message = $"Validation Check Failed! Object Is Null: {objectName}";
-
-            if (!string.IsNullOrEmpty(context))
-            {
-                message = $"{context} - {message}";
-            }
-
-            Debug.LogError(message);
-        }
-    }
-
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogElements<T>(this IReadOnlyList<T> list, string listName = "List")
     {
         StringBuilder logMessage = new StringBuilder();
@@ -108,7 +91,7 @@ public static class DebugHelper
         Debug.Log(logMessage.ToString());
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void LogElements<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, string dictionaryName = "Dictionary")
     {
         StringBuilder logMessage = new StringBuilder();
@@ -123,7 +106,7 @@ public static class DebugHelper
         Debug.Log(logMessage.ToString());
     }
 
-    [Conditional("DEBUG_HELPER")]
+    [Conditional("DEBUG_HELPER"), MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void CheckCondition(bool condition, string errorMessage)
     {
         if (condition == true)
